@@ -18,6 +18,9 @@
 #include <stdlib.h>
 #include <string.h>
 
+int pas[ARRAY_SIZE] = {0}; // Process Address Space (PAS) initialized to 0
+int BP = 499, SP = 500, PC = 10; // Initial values for the registers
+int IR[3]; // Instruction Register (holds OP, L, M)
 
 int base( int BP, int L)
 {
@@ -31,9 +34,6 @@ int base( int BP, int L)
 }
 int main(int argc, char *argv[]){
 
-int pas[ARRAY_SIZE] = {0}; // Process Address Space (PAS) initialized to 0
-int BP = 499, SP = 500, PC = 10; // Initial values for the registers
-int IR[3]; // Instruction Register (holds OP, L, M)
 
 FILE *file = fopen(argv[1], "r");
 while (fscanf(file, "%d %d %d", &pas[address], &pas[address + 1], &pas[address + 2]) != EOF) {
@@ -47,7 +47,8 @@ while(1){
     IR[2] = pas[PC + 2];  // M
     PC += 3;              // Increment PC for next instruction
     switch (IR[0]) {
-    	case 1 
+    	case 1: 
+	    IR[BP] = IR[2];
     	//Literal push: sp  sp- 1; pas[sp] n 
     	case 2 switch (IR[1]) {
 		case 1		
