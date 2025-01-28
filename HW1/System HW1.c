@@ -18,6 +18,15 @@
 #include <stdlib.h>
 #include <string.h>
 
+#define ARRAY_SIZE 500
+#define TEXT_START 10
+
+// CPU Registers
+int BP = 499, SP = 500, PC = TEXT_START;
+int IR_OP = 0, IR_L = 0, IR_M = 0;
+
+int pas[ARRAY_SIZE] = {0}; // Process Address Space (PAS) initialized to 0
+
 
 int base( int BP, int L)
 {
@@ -30,10 +39,6 @@ int base( int BP, int L)
 	return arb;
 }
 int main(int argc, char *argv[]){
-
-int pas[ARRAY_SIZE] = {0}; // Process Address Space (PAS) initialized to 0
-int BP = 499, SP = 500, PC = 10; // Initial values for the registers
-int IR[3]; // Instruction Register (holds OP, L, M)
 
 FILE *file = fopen(argv[1], "r");
 while (fscanf(file, "%d %d %d", &pas[address], &pas[address + 1], &pas[address + 2]) != EOF) {
