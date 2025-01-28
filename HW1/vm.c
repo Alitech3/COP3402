@@ -42,7 +42,8 @@ int base( int BP, int L)
 
 int main(int argc, char *argv[]){
 
-int address = 0;
+	printf("%s", "Virtual Machine\n");
+
 FILE *file = fopen(argv[1], "r");
 while (fscanf(file, "%d %d %d", &pas[PC], &pas[PC + 1], &pas[PC + 2]) != EOF) {
     PC += 3;
@@ -128,6 +129,7 @@ while(EOP){
 	//pas[sp] <- pas[base(bp, n) - o];
 	SP -=1;
 	pas[SP] = pas[base(BP,IR[1]) - IR[2]];
+	
 	break;
 	// STO
 	case 4:
@@ -136,6 +138,7 @@ while(EOP){
 		break;
 	
 	case 5:
+
 	/*Call the procedure at code address a, generating a new activation record and setting PC to a:*/
 	pas[SP - 1]  =  base(BP, IR[1]); /* static link (SL) */
 	pas[SP - 2] = BP;	/* dynamic link (DL) */
@@ -160,7 +163,7 @@ while(EOP){
 		break;
 	case 9:
 		if (IR[2] == 1) {
-			printf(pas[SP]);
+			printf("%d", pas[SP]);
 			SP = SP+1;
 		} else if (IR[2] == 2) {
 			SP= SP-1;
