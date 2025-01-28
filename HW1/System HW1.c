@@ -46,22 +46,26 @@ while(1){
     IR[1] = pas[PC + 1];  // L
     IR[2] = pas[PC + 2];  // M
     PC += 3;              // Increment PC for next instruction
-    switch IR[0]
+    switch (IR[0]) {
     	case 1 
     	//Literal push: sp  sp- 1; pas[sp] n 
-    	case 2
-	// 02	RTN	0	0	Returns from a subroutine is encoded 0 0 0 and restores the caller’s AR:
+    	case 2 switch (IR[1]) {
+		case 1		
+	// 02 RTN 0 0 Returns from a subroutine is encoded 0 0 0 and restores the caller’s AR:
 	//sp ← bp + 1; bp ← pas[sp - 2];  pc ← pas[sp - 3];
-	case 3 //Load value to top of stack from the stack location at offset o from n lexicographical levels down
-//sp  sp - 1;
-//pas[sp]  pas[base(bp, n) - o];
 
+	}
+	case 3 //Load value to top of stack from the stack location at offset o from n lexicographical levels down
+	//sp  sp - 1;
+	//pas[sp]  pas[base(bp, n) - o];
+	
 	case 4
 	case 5 
 	case 6
 	case 7
 	case 8
 	case 9
+		}
 }
 
 
