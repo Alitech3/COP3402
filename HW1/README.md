@@ -1,7 +1,8 @@
 # Homework HW1: P-Machine VM
 
 ## Description
-S
+P-Machine Code interpreter
+
 ## Compilation Instructions
 gcc vm.c
 
@@ -13,7 +14,8 @@ run 'a.exe' or './a.out' in terminal. Ensure the input file is in the same direc
 >./a.out input.txt
 
 ### Output Example:
-d:\ZaehetFiles\Desktop\UCF\Spring 25\COP3402\HW1>a.exe input.txt
+[output]
+d:\%User%>./a.out input.txt
                PC   BP   SP    stack
 Inital Values: 10   499  500
 
@@ -37,8 +39,6 @@ RTN 0 0         64   499   +494 0 0 0 0 12 3
 Output result is: 3
 SYS 0 1         67   499   +495 0 0 0 0 12
 SYS 0 3         70   499   +495 0 0 0 0 12 
-[output]
-
 
 ## Team Information (if applicable)
 - Ali Chapman, ali.chapman@ucf.edu
