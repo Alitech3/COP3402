@@ -22,47 +22,48 @@ int pas[ARRAY_SIZE] = {0}; // Process Address Space (PAS) initialized to 0
 void printAR(int PC, int BP, int SP, int OP, int M) {
     switch (OP) {
         case 1:
-            printf("\nLIT ");
+            printf("\n\tLIT ");
             break;
         case 2:
             switch (M) {
-                case 0: printf("\nRTN "); break;
-                case 1: printf("\nADD "); break;
-                case 2: printf("\nSUB "); break;
-                case 3: printf("\nMUL "); break;
-                case 4: printf("\nDIV "); break;
-                case 5: printf("\nEQL "); break;
-                case 6: printf("\nNEQ "); break;
-                case 7: printf("\nLSS "); break;
-                case 8: printf("\nLEQ "); break;
-                case 9: printf("\nGTR "); break;
-                case 10: printf("\nGEQ "); break;
+                case 0: printf("\n\tRTN "); break;
+                case 1: printf("\n\tADD "); break;
+                case 2: printf("\n\tSUB "); break;
+                case 3: printf("\n\tMUL "); break;
+                case 4: printf("\n\tDIV "); break;
+                case 5: printf("\n\tEQL "); break;
+                case 6: printf("\n\tNEQ "); break;
+                case 7: printf("\n\tLSS "); break;
+                case 8: printf("\n\tLEQ "); break;
+                case 9: printf("\n\tGTR "); break;
+                case 10: printf("\n\tGEQ "); break;
                 default: break;
             }
             break;
-        case 3: printf("\nLOD "); break;
-        case 4: printf("\nSTO "); break;
-        case 5: printf("\nCAL "); break;
-        case 6: printf("\nINC "); break;
-        case 7: printf("\nJMP "); break;
-        case 8: printf("\nJPC "); break;
-        case 9: printf("\nSYS "); break;
+        case 3: printf("\n\tLOD "); break;
+        case 4: printf("\n\tSTO "); break;
+        case 5: printf("\n\tCAL "); break;
+        case 6: printf("\n\tINC "); break;
+        case 7: printf("\n\tJMP "); break;
+        case 8: printf("\n\tJPC "); break;
+        case 9: printf("\n\tSYS "); break;
         default: break;
     }
 
     // Print instruction arguments
-    printf("%d %d", IR[1], IR[2]);
+    printf("%d %-7d", IR[1], IR[2]);
 
     // Print stack information
-    printf("         %d   %d   %d ", PC, BP, SP);
-	int currentSP = SP;
+    printf("%d %5d %5d ", PC, BP, SP);
     if (SP < ARRAY_SIZE) {
         for (int i = ARRAY_SIZE - 1; i >= SP; i--) {
+            if (pas[i] != pas[i+1]){
+                if((pas[i-1] == ARRAY_SIZE-1)&&(pas[i]==ARRAY_SIZE-1)) printf("%2s", " | ");
+                else if(pas[i] == ARRAY_SIZE-1) printf("%2s", " | ");
+            }
+
             printf("%d ", pas[i]);
 		    // If we encounter the dynamic link (stored at pas[currentSP]), we print the separator
-  	if (currentSP != SP) {
-            printf(" | "); // Separator between activation records
-        }
         }
     }
 }
@@ -83,7 +84,7 @@ int main(int argc, char *argv[]){
 printf("               PC   BP   SP    stack\n");
 printf("Inital Values: %d   %d  %d\n", PC, BP, SP);
 
-FILE *file = fopen("input.txt", "r");
+FILE *file = fopen(argv[1], "r");
 while (fscanf(file, "%d %d %d", &pas[PC], &pas[PC + 1], &pas[PC + 2]) != EOF) {
     // printf("%d %d %d\n", pas[PC], pas[PC + 1], pas[PC + 2]);
     PC += 3;
@@ -97,19 +98,17 @@ while(EOP) {
     IR[2] = pas[PC + 2];  // M
     PC += 3;              // Increment PC for next instruction
     switch (IR[0]) {
-    case 1:
-		// LIT
-		//Literal push: sp <- sp- 1; pas[sp] <-n 
-		SP-=1;
-		pas[SP] = IR[2];
-        break;
+	case 1:
+    // LIT: Push literal onto the stack
+    SP -= 1;
+    pas[SP] = IR[2];
+    break;
     case 2: 
 	// RTN
-		if(IR[2] == 0)
-		{ 
-            SP = BP + 1;                  // Reset stack pointer
+	    if (IR[2] == 0) {
+        SP = BP + 1;                  // Reset stack pointer
         BP = pas[SP - 2];             // Restore base pointer
-        PC = pas[SP - 3];
+        PC = pas[SP - 3];             // Set PC to the return address
 		}
 		else if (IR[2] == 1)
 		// ADD
@@ -181,17 +180,16 @@ while(EOP) {
 	// STO
 	case 4:
 		pas[base(BP, IR[1]) - IR[2]] = pas[SP];
-		SP = SP + 1;
+		SP += 1;
 		break;
-	case 5:
-
-	/*Call the procedure at code address a, generating a new activation record and setting PC to a:*/
-	pas[SP - 1]  =  base(BP, IR[1]); /* static link (SL) */
-	pas[SP - 2] = BP;	/* dynamic link (DL) */
-	pas[SP - 3]  = PC;	 /*return address (RA)	*/ 
-	BP = SP - 1;
-	PC = IR[2];
-	break;
+	case 5: 
+    // CAL: Call the procedure at code address a, generating a new activation record and setting PC to a
+    pas[SP - 1]  = base(BP, IR[1]);  // static link (SL)
+    pas[SP - 2] = BP;                // dynamic link (DL)
+    pas[SP - 3]  = PC;               // return address (RA)
+    BP = SP - 1;                     // update BP for the new AR
+    PC = IR[2];                      // jump to the procedure
+    break;
 	case 6:
         // INC
 		// Allocate n locals on the stack
@@ -202,15 +200,14 @@ while(EOP) {
 		PC = IR[2];
 		break;
 	case 8:
-        // JPC
-		if (pas[SP] == 0) {
-			PC = IR[2];
-		}
-		else if (pas[SP] != 0){
-			SP += 1;
-			PC +=3;
-		}
-		break;
+    // JPC: Jump if the top of the stack is zero
+    if (pas[SP] == 0) {
+        PC = IR[2];  // Jump to the specified address
+    } else {
+        SP++;        // Otherwise, pop the value from the stack
+    }
+    break;
+
 	case 9:
         // SIO
 		if (IR[2] == 1) {
@@ -219,7 +216,7 @@ while(EOP) {
 		} else if (IR[2] == 2) {
 			SP -= 1;
 			printf("\nPlease enter an integer: ");
-			fscanf(stdin, "%d", &pas[SP]);
+			fscanf(stdin, "%d%*c", &pas[SP]);
 		} else if (IR[2] == 3) {
 			EOP = 0;
 		}
