@@ -2,7 +2,7 @@
 # Homework 2: [Lexical Analyzer]
 
 ## Description
-[]
+[run 'a.exe' or './a.out' in terminal. Ensure the input file is in the same directory as the executable]
 
 ## Compilation Instructions
 [gcc lex.c]
