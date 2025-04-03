@@ -1,0 +1,15 @@
+var num, sum, digit;
+begin
+    num := 1234;  /* Hardcoded number */
+    sum := 0;      /* Initialize sum to 0 */
+
+    while num > 0 do
+    begin
+        digit := num mod 10;  /* Extract last digit */
+        sum := sum + digit;   /* Add it to sum */
+        num := num - digit;   /* Remove last digit */
+        num := num / 10;      /* Shift right by dividing */
+    end;
+
+    write sum  /* Output the sum of digits */
+end.

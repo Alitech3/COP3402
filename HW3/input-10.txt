@@ -1,0 +1,13 @@
+var x, y;
+begin
+$
+x := y + 56;
+thisisafine := y + 4;
+thisistoolon := y + 5;
+666666
+// not a real comment
+/* a multi-
+line comment isnottokenized*/
+/* ignored string 1 /* ignored string 2 */ example string 3 */ example string 4
+/* example string 5 /* example string 6 example string 7
+end.

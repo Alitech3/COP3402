@@ -1,0 +1,19 @@
+var a, b, temp;
+begin
+ read a;  /* First number. Try 12012 */
+ read b;   /* Second number. Try 27720 */
+
+ /* Print initial values */
+ write a;
+ write b;
+
+ while b > 0 do
+ begin
+   temp := a mod b;  /* Compute remainder */
+
+   a := b;
+   b := temp;
+ end;
+
+ write a  /* Final print: GCD result. Expected: 924 */
+end.

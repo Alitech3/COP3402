@@ -1,0 +1,45 @@
+const c1 = 10, c2 = 20;
+var x, y, z;
+
+begin
+  /* Assignment statements */
+  x := c1;
+  y := c2;
+  z := 5;
+
+  /* Block with multiple statements */
+  begin
+    x := x + 1;
+    y := y - 2;
+    z := z * 3;
+  end;
+
+  /* If statement with condition */
+  if x > y then
+    write x
+  fi;
+
+  /* While loop with condition */
+  while z >= 13 do
+  begin
+    write z;
+    z := z - 1
+  end;
+
+  /* Read statement (input expected) */
+  read x;
+
+  /* Write statement (output expected) */
+  write x;
+
+  /* Arithmetic expressions with various operators */
+  x := (x + y) * (z - 2) / 2;
+  y := x mod 3;
+
+  /* Fully parenthesized expressions */
+  write x;
+  write y;
+  if (x + 2) >= (y * 3) then
+    write y
+  fi;
+end.

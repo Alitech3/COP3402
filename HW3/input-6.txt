@@ -1,0 +1,17 @@
+var x, y;
+begin
+$
+y := 3;
+x := y + 56;
+thisisafine := y + 4;
+thisistoolon := y + 5;
+55555
+666666
+// this is not a real comment
+/* This is a multi-
+line comment
+and it should
+$$$ notbetokenized. */
+/* non terminated comment
+will be tokenized
+end.

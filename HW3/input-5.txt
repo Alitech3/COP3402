@@ -1,0 +1,67 @@
+const
+    NUM1 = 12012,
+    NUM2 = 27720,
+    FIBCOUNT = 10;
+
+var
+    a, b, temp, gcd, resultGcd, lcm, product, sum, digit, fib1, fib2, next, count;
+
+begin
+    /*--- Part 1: GCD, LCM, and Sum of Digits of the GCD ---*/
+
+    /* Initialize with hardcoded numbers */
+    a := NUM1;
+    b := NUM2;
+    product := a * b;
+
+    /* Compute GCD using the Euclidean algorithm */
+    while b > 0 do
+    begin
+        temp := a mod b;   /* Remainder when a is divided by b */
+        a := b;
+        b := temp;
+    end;
+    gcd := a;           /* GCD is now stored in a */
+    resultGcd := gcd;  /* Save the GCD for output before modifying it */
+
+    /* Compute LCM using the formula: LCM = (NUM1 * NUM2) / GCD */
+    lcm := product / resultGcd;
+
+    /* Calculate the sum of digits of the GCD */
+    sum := 0;
+    while gcd > 0 do
+    begin
+        digit := gcd mod 10;  /* Extract last digit */
+        sum := sum + digit;   /* Add digit to sum */
+        /* Remove the last digit using subtraction and division */
+        gcd := gcd - digit;
+        gcd := gcd / 10;
+    end;
+
+    /* Output results of Part 1 */
+    write NUM1;         /* First number */
+    write NUM2;         /* Second number */
+    write resultGcd;   /* Expected GCD: 924 */
+    write lcm;          /* Expected LCM: 360360 */
+    write sum;          /* Sum of digits of GCD: 9 + 2 + 4 = 15 */
+
+    /*--- Part 2: Fibonacci Sequence ---*/
+
+    /* Initialize first two Fibonacci numbers and a counter */
+    fib1 := 0;
+    fib2 := 1;
+    count := 1;
+
+    /* Print first Fibonacci number */
+    write fib1;
+
+    /* Generate and print the next FIBCOUNT-1 Fibonacci numbers */
+    while count < FIBCOUNT do
+    begin
+        write fib2;
+        next := fib1 + fib2;  /* Calculate next term */
+        fib1 := fib2;
+        fib2 := next;
+        count := count + 1;
+    end;
+end.
